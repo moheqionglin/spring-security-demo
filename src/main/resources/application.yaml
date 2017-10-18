@@ -1,0 +1,9 @@
+server:
+    port: 13003
+    servlet-path: /spring
+
+logging:
+    level:
+        com.springsecurity.demo: DEBUG
+
+                
