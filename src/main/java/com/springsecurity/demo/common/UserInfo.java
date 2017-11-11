@@ -124,4 +124,20 @@ public class UserInfo implements Serializable, UserDetails {
                 ", roles=" + roles +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object rhs) {
+        if (rhs instanceof UserInfo) {
+            return email.equals(((UserInfo) rhs).getEmail());
+        }
+        return false;
+    }
+
+    /**
+     * Returns the hashcode of the {@code username}.
+     */
+    @Override
+    public int hashCode() {
+        return email.hashCode();
+    }
 }

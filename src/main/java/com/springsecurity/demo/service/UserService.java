@@ -22,7 +22,7 @@ public class UserService {
     @PersistenceContext
     private EntityManager em;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
     @Transactional
     public List<UserInfo> findAllUsers(){
         return em.createQuery("SELECT u FROM User u ", User.class)

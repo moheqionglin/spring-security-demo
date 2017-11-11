@@ -89,16 +89,15 @@ public class AuthService {
                     .setParameter("token", token)
                     .getSingleResult();
             if(authToken.isNotExpired()){
+                attemptUpdateExpiredTime(authToken);
+                rsp.setUser(new UserInfo(authToken.getUser()));
+                rsp.setToken(authToken.getToken());
+                rsp.setAuthenticate(true);
+            }else{
                 log.debug("Removing expired token.");
                 em.remove(authToken);
-                return rsp;
             }
-            attemptUpdateExpiredTime(authToken);
 
-            rsp.setUser(new UserInfo(authToken.getUser()));
-            rsp.setToken(authToken.getToken());
-            rsp.setAuthenticate(true);
-            return rsp;
         }catch (Exception e){
             log.error("Pre Auth verify no token found");
 

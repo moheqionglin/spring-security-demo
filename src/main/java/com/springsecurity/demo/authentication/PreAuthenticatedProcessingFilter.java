@@ -22,6 +22,7 @@ public class PreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedPr
     }
 
 
+
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpServletRequest) {
         if(getPreAuthenticatedCredentials(httpServletRequest) == null){

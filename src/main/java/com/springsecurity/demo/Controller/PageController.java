@@ -1,16 +1,19 @@
 package com.springsecurity.demo.Controller;
 
+import com.springsecurity.demo.common.UserInfo;
 import com.springsecurity.demo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author wanli zhou
@@ -22,6 +25,10 @@ public class PageController {
     @Autowired
     private UserService userService;
     Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
+
     @RequestMapping("/")
     public String directIndex(HttpServletResponse rep) {
         return "index";
@@ -32,13 +39,34 @@ public class PageController {
         log.trace("Default page requested, rendering index.");
         return "index";
     }
-    @GetMapping("/p/{page}")
-    public String direct(@PathVariable("page") String page, Map<String, Object> model) {
-        if("manager-user".equals(page)){
-            model.put("allUsers", userService.findAllUsers());
-        }
-        log.trace("Trying to render page: {}", page);
-        return page;
+
+
+    @GetMapping("/p/all-login-users")
+    public String allLoginUsers(Map<String, Object> model) {
+        List<Object> userInfoLists = sessionRegistry.getAllPrincipals();
+        List<UserInfo> users = userInfoLists.stream().filter(o -> o instanceof UserInfo).map(o -> (UserInfo) o).collect(Collectors.toList());
+        model.put("allUsers", users);
+        log.trace("Trying to render page: {}", users);
+        return "all-login-users";
     }
 
+
+    @GetMapping("/p/manager-user")
+    public String direct(Map<String, Object> model) {
+        model.put("allUsers", userService.findAllUsers());
+        return "manager-user";
+    }
+
+    @GetMapping("/p/invalidSession")
+    public String invalidSession() {
+        return "invalidSession";
+    }
+    @GetMapping("/p/sessiontimeout")
+    public String sessiontimeout() {
+        return "sessiontimeout";
+    }
+    @GetMapping("/p/login")
+    public String login() {
+        return "login";
+    }
 }

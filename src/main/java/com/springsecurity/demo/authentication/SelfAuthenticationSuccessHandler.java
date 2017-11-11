@@ -29,7 +29,7 @@ public class SelfAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        rememberMeServices.loginSuccess(httpServletRequest, httpServletResponse, authentication);
+//        rememberMeServices.loginSuccess(httpServletRequest, httpServletResponse, authentication);
         UserInfo user = (UserInfo) authentication.getPrincipal();
         AuthDetailsInfo details = (AuthDetailsInfo) authentication.getDetails();
         addAuthCookie(user, details.getToken(), httpServletResponse, httpServletRequest);

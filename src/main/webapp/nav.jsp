@@ -27,9 +27,11 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理员功能 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="${pageContext.request.contextPath}/p/manager-user">用户列表维护</a></li>
-                            <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')">
+                            <sec:authorize access="hasAnyRole('ROLE_SUPER_ADMIN')">
                                 <li><a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal" >切换用户</a></li>
+                                <li><a href="${pageContext.request.contextPath}/p/all-login-users" >在线用户管理</a></li>
                             </sec:authorize>
+
                         </ul>
                     </li>
                 </sec:authorize>
@@ -39,9 +41,6 @@
                     <li ><a href="${pageContext.request.contextPath}/">个人Profile</a></li>
                 </sec:authorize>
 
-                <c:if test="${authFrom == 'REMBERME_FILTER'}">
-                    <li ><a href="${pageContext.request.contextPath}/" style="color: #00FF00">从 "Remember Me Cookies" 认证</a></li>
-                </c:if>
                 <c:if test="${authFrom == 'PRE_AUTH_FILTER'}">
                     <li  ><a href="${pageContext.request.contextPath}/" style="color: #00FF00">从 "Pre auth" 认证</a></li>
                 </c:if>
@@ -49,7 +48,7 @@
                     <li ><a href="${pageContext.request.contextPath}/" style="color: #00FF00">从 "Login auth" 认证</a></li>
                 </c:if>
                 <sec:authorize access="isRememberMe()">
-                    <li style="color: #00FF00">从 "Remember Me Cookies" 认证</li>
+                    <li ><a href="${pageContext.request.contextPath}/" style="color: #00FF00">从 "Remember Me Cookies" 认证</a></li>
                 </sec:authorize>
 
                 <sec:authorize access="hasAnyRole('ROLE_PREVIOUS_ADMINISTRATOR')">
