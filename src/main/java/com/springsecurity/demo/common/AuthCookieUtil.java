@@ -20,7 +20,7 @@ public class AuthCookieUtil {
         cookie.setMaxAge(0);
         resp.addCookie(cookie);
         cookie = new Cookie(SESSION_NAME, "");
-        cookie.setPath("/frontend-app/");
+        cookie.setPath("/");
         cookie.setMaxAge(0);
         resp.addCookie(cookie);
     }

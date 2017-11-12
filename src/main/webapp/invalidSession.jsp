@@ -29,6 +29,7 @@
     <!-- Static navbar -->
     <%@ include file="nav.jsp" %>
     <div class="alert alert-success" role="alert">
+        <h2>Invalid Session 页面 (您的账号被他人登录，如果密码被泄露请及时修改密码)</h2>
         <strong>温馨提示</strong> <br>
         用户信息：<sec:authentication property="principal"/> <br>
         权限信息：<sec:authentication property="authorities"/><br>

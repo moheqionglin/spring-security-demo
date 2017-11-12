@@ -29,6 +29,7 @@
     <!-- Static navbar -->
     <%@ include file="nav.jsp" %>
     <div class="alert alert-success" role="alert">
+        <h2> Session timeout页面</h2>
         <strong>温馨提示</strong> <br>
         用户信息：<sec:authentication property="principal"/> <br>
         权限信息：<sec:authentication property="authorities"/><br>
@@ -44,8 +45,6 @@
     <!-- Main component for a primary marketing message or call to act ion -->
     <sec:authorize access="isAuthenticated()">
         <div class="jumbotron">
-            <h1>Session Timeout page</h1>
-
                 <dl class="dl-horizontal">
                     <dt>姓名</dt>
                     <dd><%= user.getName()%></dd>

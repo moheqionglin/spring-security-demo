@@ -53,6 +53,10 @@ public class AuthService {
                 authToken.setExpiredAt(getExpireTime());
                 authToken.setToken(rsp.getToken());
                 authToken.setUser(authUser);
+
+                em.createQuery("delete from AuthToken at where at.user.id = :id ")
+                        .setParameter("id", authUser.getId()) .executeUpdate();
+
                 em.persist(authToken);
 
             }
@@ -63,10 +67,10 @@ public class AuthService {
     }
 
     @Transactional
-    public void removeTokenByEmail(Integer id){
+    public void removeToken(UserInfo user, String token){
         try {
-            em.createQuery("delete from AuthToken at where at.user.id = :id")
-                    .setParameter("id", id).executeUpdate();
+            em.createQuery("delete from AuthToken at where at.user.id = :id and at.token =:token")
+                    .setParameter("id", user.getId()).setParameter("token", token).executeUpdate();
         }catch (Exception e){
             log.error("delete token error ");
         }

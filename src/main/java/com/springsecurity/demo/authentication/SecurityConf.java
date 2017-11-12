@@ -16,6 +16,8 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
@@ -25,7 +27,9 @@ import org.springframework.security.web.authentication.session.ConcurrentSession
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
+import org.springframework.security.web.session.SessionManagementFilter;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
@@ -77,6 +81,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
             .addFilterAfter(selfAuthenFilter(), PreAuthenticatedProcessingFilter.class)
             .addFilterAt(switchUserFilter(), SwitchUserFilter.class)
             .addFilterAt(concurrentSessionFilter(), ConcurrentSessionFilter.class)
+            .addFilterAt(sessionManagementFilter(), SessionManagementFilter.class)
         .exceptionHandling().authenticationEntryPoint(authEntryPoint())
         .and()//http://www.baeldung.com/spring-security-session http://blog.csdn.net/xingxianbiao/article/details/50856672
             .sessionManagement().sessionAuthenticationStrategy(compositeSessionAuthenticationStrategy())
@@ -93,8 +98,24 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public SessionManagementFilter sessionManagementFilter() {
+        return new SessionManagementFilter(new HttpSessionSecurityContextRepository(), compositeSessionAuthenticationStrategy());
+    }
+
+    @Bean
+    public  SessionExceedSecurityContextLogoutHandler sessionExceedSecurityContextLogoutHandler(){
+        return new SessionExceedSecurityContextLogoutHandler();
+    }
+    @Bean
     public ConcurrentSessionFilter concurrentSessionFilter(){
-        return new ConcurrentSessionFilter(sessionRegistry(), "/p/sessiontimeout");
+        ConcurrentSessionFilter concurrentSessionFilter = new ConcurrentSessionFilter(sessionRegistry(), "/p/invalidSession");
+        concurrentSessionFilter.setLogoutHandlers(new LogoutHandler[] {
+                new SecurityContextLogoutHandler(),//默认
+                sessionExceedSecurityContextLogoutHandler(),  // 不加这句话， 因为 有 auth_token 和 remoberme_token 会不断的换jesssionID，
+//                tokenBasedRememberMeServices() // 不能加这句话  因为 remeber_me token 一个用户名只会有一个，后面登录的会覆盖之前的token。 所以推出的时候只要把之前的 remebermetoken
+//                删掉记好了
+        });
+        return concurrentSessionFilter;
     }
     @Bean
     public CompositeSessionAuthenticationStrategy compositeSessionAuthenticationStrategy(){
@@ -120,7 +141,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PersistentTokenBasedRememberMeServices tokenBasedRememberMeServices(){
-        PersistentTokenBasedRememberMeServices t =  new PersistentTokenBasedRememberMeServices("remember-me", userDetailsServiceBean(), persistentTokenRepository());
+        OnlyOnePersistentTokenBasedRememberMeServices t =  new OnlyOnePersistentTokenBasedRememberMeServices("remember-me", userDetailsServiceBean(), persistentTokenRepository());
         t.setAlwaysRemember(true);
         return t;
     }
