@@ -30,8 +30,11 @@ public class SelfLogoutSuccessHandler implements LogoutSuccessHandler {
         AuthCookieUtil.removeAuthCookie(httpServletResponse);
         if(authentication != null && authentication.getPrincipal() instanceof UserInfo){
             UserInfo user = (UserInfo) authentication.getPrincipal();
-            AuthDetailsInfo authDetail = (AuthDetailsInfo) authentication.getDetails();
-            authService.removeToken(user, authDetail.getToken());
+            if(authentication.getDetails() instanceof AuthDetailsInfo){
+                AuthDetailsInfo authDetail = (AuthDetailsInfo) authentication.getDetails();
+                authService.removeToken(user, authDetail.getToken());
+            }
+
         }
 
         if(httpServletRequest.getHeader("Accept") != null && httpServletRequest.getHeader("Accept").toLowerCase().contains("application/json")){

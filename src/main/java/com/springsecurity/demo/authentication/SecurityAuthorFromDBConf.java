@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +15,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -38,14 +39,14 @@ import java.util.Arrays;
  * @author wanli zhou
  * @created 2017-10-23 11:14 PM.
  */
-@Profile("n3_preAuth_selfAuth_logout")
+@Profile("n3_preAuth_selfAuth_logout_DB")
 @EnableWebSecurity
 // jsr250Enabled @RolesAllowed({"ROLE_SITE_ADMIN","ROLE_CATALOG_ADMIN"})
 @EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
 //securedEnabled @Secured({"ROLE_SITE_ADMIN", "ROLE_SUPPLIER", "ROLE_CSR", "ROLE_SUPPLIER_ADMIN"})
 //@EnableGlobalMethodSecurity(securedEnabled = true)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-public class SecurityConf extends WebSecurityConfigurerAdapter {
+public class SecurityAuthorFromDBConf extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
@@ -56,14 +57,6 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         http
         .csrf().disable()
         .authorizeRequests()
-            .antMatchers("/switch_user").hasRole("SUPER_ADMIN")
-            .antMatchers("/switch_user_exit").hasRole("PREVIOUS_ADMINISTRATOR")
-            .antMatchers("/p/manager-user", "/p/all-login-users").hasAnyRole("SUPER_ADMIN", "ADMIN")
-            .antMatchers("/p/manager-user/").hasAnyRole("SUPER_ADMIN", "ADMIN")
-            .antMatchers("/p/invalidSession", "/p/sessiontimeout").permitAll()
-            .antMatchers("/css/**", "/fonts/**", "/js/**").permitAll()
-            .antMatchers(HttpMethod.POST, "/ajax_login*").permitAll()
-            .anyRequest().permitAll()//位置很重要，是从第一个匹配合适的。
         .and()
                 .rememberMe()
                 //在这里设置没效果放在 selfAuthenFilter中设置
@@ -86,6 +79,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
             .addFilterAt(switchUserFilter(), SwitchUserFilter.class)
             .addFilterAt(concurrentSessionFilter(), ConcurrentSessionFilter.class)
             .addFilterAt(sessionManagementFilter(), SessionManagementFilter.class)
+            .addFilterAt(filterSecurityInterceptor(), FilterSecurityInterceptor.class)
         .exceptionHandling().authenticationEntryPoint(authEntryPoint())
         .and()//http://www.baeldung.com/spring-security-session http://blog.csdn.net/xingxianbiao/article/details/50856672
             .sessionManagement().sessionAuthenticationStrategy(compositeSessionAuthenticationStrategy())
@@ -100,6 +94,26 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     }
 
 
+    //https://docs.spring.io/spring-security/site/faq/faq.html#faq-dynamic-url-metadata
+    @Bean
+    public FilterSecurityInterceptor filterSecurityInterceptor(){
+        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+
+        //这里的 AuthenticationManager 可以暂时不用设置
+//        filterSecurityInterceptor.setAuthenticationManager();
+        //从source中根据本次 request 获取当前请求的 权限
+        filterSecurityInterceptor.setSecurityMetadataSource(selfFilterInvocationSecurityMetadataSource());
+
+        //组件 投票公证处：  制定投票规则， 找投票的人
+        AffirmativeBased accessDecisionManager = new AffirmativeBased(Arrays.asList(new SelfWebExpressionVoter()));
+        filterSecurityInterceptor.setAccessDecisionManager(accessDecisionManager);
+        return filterSecurityInterceptor;
+    }
+
+    @Bean
+    public SelfFilterInvocationSecurityMetadataSource selfFilterInvocationSecurityMetadataSource(){
+        return new SelfFilterInvocationSecurityMetadataSource();
+    }
     @Bean
     public SessionManagementFilter sessionManagementFilter() {
         return new SessionManagementFilter(new HttpSessionSecurityContextRepository(), compositeSessionAuthenticationStrategy());

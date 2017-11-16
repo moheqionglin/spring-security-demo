@@ -38,14 +38,14 @@ import java.util.Arrays;
  * @author wanli zhou
  * @created 2017-10-23 11:14 PM.
  */
-@Profile("n3_preAuth_selfAuth_logout")
+@Profile("n3_preAuth_selfAuth_logout_share_session")
 @EnableWebSecurity
 // jsr250Enabled @RolesAllowed({"ROLE_SITE_ADMIN","ROLE_CATALOG_ADMIN"})
 @EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
 //securedEnabled @Secured({"ROLE_SITE_ADMIN", "ROLE_SUPPLIER", "ROLE_CSR", "ROLE_SUPPLIER_ADMIN"})
 //@EnableGlobalMethodSecurity(securedEnabled = true)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-public class SecurityConf extends WebSecurityConfigurerAdapter {
+public class SecurityFromSessionRepoConf extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;

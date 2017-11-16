@@ -121,4 +121,10 @@ public class AuthService {
         }
     }
 
+    @Transactional
+    public String getRoles(String inputUrl){
+        return em.createQuery("select c.roles from Authorization c where c.url =:url", String.class)
+                .setParameter("url", inputUrl).getResultList().stream().findFirst().orElse(null);
+    }
+
 }

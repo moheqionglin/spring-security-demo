@@ -69,4 +69,8 @@ public class PageController {
     public String login() {
         return "login";
     }
+    @GetMapping("/p/find-users")
+    public String findUsers() {
+        return "find-users";
+    }
 }

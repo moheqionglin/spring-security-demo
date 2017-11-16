@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="wanli zhou" id="6">
+        <createTable tableName="authorization">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="url" type="varchar(256)">
+            </column>
+            <column name="http_method" type="varchar(64)">
+            </column>
+            <column name="roles" type="varchar(256)">
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="zhou wanli " author="7">
+    <sql>
+        INSERT INTO `authorization` VALUES (1,'/switch_user', 'ALL', 'hasRole(\'ROLE_SUPER_ADMIN\')' );
+        INSERT INTO `authorization` VALUES (2,'/switch_user_exit', 'ALL', 'hasRole(\'ROLE_PREVIOUS_ADMINISTRATOR\')');
+        INSERT INTO `authorization` VALUES (3,'/p/manager-user', 'ALL', 'hasAnyRole(\'ROLE_SUPER_ADMIN\', \'ROLE_ADMIN\')' );
+        INSERT INTO `authorization` VALUES (4,'/p/all-login-users', 'ALL', 'hasAnyRole(\'ROLE_SUPER_ADMIN\', \'ROLE_ADMIN\')' );
+        INSERT INTO `authorization` VALUES (5,'/p/manager-user/', 'ALL', 'hasAnyRole(\'ROLE_SUPER_ADMIN\', \'ROLE_ADMIN\')' );
+        INSERT INTO `authorization` VALUES (6,'/p/invalidSession', 'ALL', 'permitAll()' );
+        INSERT INTO `authorization` VALUES (7,'/p/sessiontimeout', 'ALL', 'permitAll()' );
+        INSERT INTO `authorization` VALUES (8,'/css/**', 'ALL', 'permitAll()' );
+        INSERT INTO `authorization` VALUES (9,'/fonts/**', 'ALL', 'permitAll()' );
+        INSERT INTO `authorization` VALUES (10,'/js/**', 'ALL', 'permitAll()' );
+        INSERT INTO `authorization` VALUES (11,'/ajax_login*', 'ALL', 'permitAll()' );
+    </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -40,7 +40,9 @@
                 <sec:authorize access="isAuthenticated()">
                     <li ><a href="${pageContext.request.contextPath}/">个人Profile</a></li>
                 </sec:authorize>
-
+                <sec:authorize access="isFullyAuthenticated()">
+                    <li ><a href="${pageContext.request.contextPath}/p/find-users">查找用户</a></li>
+                </sec:authorize>
                 <c:if test="${authFrom == 'PRE_AUTH_FILTER'}">
                     <li  ><a href="${pageContext.request.contextPath}/" style="color: #00FF00">从 "Pre auth" 认证</a></li>
                 </c:if>

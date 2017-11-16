@@ -8,6 +8,10 @@ import org.springframework.util.StringUtils;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,6 +33,16 @@ public class SelfAuthenticationProcessingFilter extends AbstractAuthenticationPr
         this.setAuthenticationManager(new ProviderManager(Arrays.asList(authenticationProvider)));
     }
 
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        if (((HttpServletRequest) req).getMethod().equals("POST")) {
+            super.doFilter(req, res, chain);
+        } else {
+            HttpServletResponse resp = (HttpServletResponse) res;
+            resp.setHeader("Access-Control-Allow-Origin", "*");
+            chain.doFilter(req, res);
+        }
+    }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         try {

@@ -5,11 +5,20 @@ server:
 logging:
     level:
         com.springsecurity.demo: DEBUG
-        org.springframework.security.web.FilterChainProxy: debug
+        org.springframework.security.web.FilterChainProxy: DEBUG
+        org.springframework.web.servlet.DispatcherServlet: DEBUG
+        org.springframework.security.access.intercept.AbstractSecurityInterceptor: DEBUG
+        org.springframework.security.web.access.intercept.FilterSecurityInterceptor: DEBUG
+        org.springframework.security.access.AbstractAccessDecisionManager: debug
+        org.springframework.security.access.AccessDecisionManager: debug
+        org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor: debug
+        org.springframework.security.access.intercept.aspectj.AspectJSecurityInterceptor: debug
 spring:
     profiles:
 #        active: showAllFilterDemo
-        active: n3_preAuth_selfAuth_logout
+#        active: n3_preAuth_selfAuth_logout
+        active: n3_preAuth_selfAuth_logout_DB
+#        active: n3_preAuth_selfAuth_logout_share_session
     datasource:
 #        driver-class-name: org.h2.Driver
 #        url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1

@@ -5,6 +5,7 @@ import com.springsecurity.demo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
@@ -75,6 +76,18 @@ public class UserRestController {
             }
         });
         return "success";
+    }
+
+    @PreAuthorize("isFullyAuthenticated()")
+    @GetMapping(value = "/findUserByEmail/{email}")
+    @PostAuthorize ("returnObject.email == authentication.name")
+    @ResponseBody
+    public UserInfo findUserByEmail(@PathVariable("email") String email){
+        try {
+            return userService.findUserByName(email);
+        }catch (Exception e){
+            throw new RuntimeException(">>>>Not Found user by email<<<< " + email);
+        }
     }
 
 }

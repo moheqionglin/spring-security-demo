@@ -10,5 +10,5 @@
     <property name="emailType" value="VARCHAR(255)"/>
 
     <include file="db-changelog/2017-10-30-init.xml"/>
-
+    <include file="db-changelog/2017-10-31-init.xml"/>
 </databaseChangeLog>
