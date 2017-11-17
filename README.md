@@ -9,6 +9,7 @@ Functions like below:
 - sessionManagementFilter : custom sessionManagementFilter
 - rememberMeFilter: custom rememberMeFilter
 - Force user login function
+- dynamic access config
 
 # How to run the project
 
