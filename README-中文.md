@@ -41,15 +41,15 @@
      
 ````
 ## h2 数据库web 控制台
-一共有
- | Tables        | desc           | other  |
- | ------------- |:-------------:| -----:|
- | auth_tokens      | Authentication token table |  |
- | authorization      | access url control config      |    |
- | persistent_logins | remember me token table      |     |
- | roles | role table      |     |
- | users | user table      |     |
- | users_roles | user role mapping table      |     |
+一共有五张表
+
+
+ - auth_tokens : Authentication token table
+ - authorization: access url control config
+ - persistent_logins: remember me token table
+ - roles: role table
+ - users: user table
+ - users_roles: user role mapping table
 
 ![][12]
 
