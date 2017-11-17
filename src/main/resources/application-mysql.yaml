@@ -1,0 +1,27 @@
+spring:
+    datasource:
+        url: jdbc:mysql://127.0.0.1:3306/spring_security_demo?characterEncoding=UTF-8&useSSL=false&createDatabaseIfNotExist=true
+        username: root
+        password:
+        driver: com.mysql.jdbc.Driver
+        test-on-borrow: true
+        test-while-idle: true
+        validation-query: SELECT 1;
+        tomcat:
+            test-on-borrow: true
+            validation-query: SELECT 1
+            max-active: 5
+            max-idle: 20
+            min-idle: 15
+            initial-size: 1
+    jpa:
+        hibernate:
+            ddl-auto: none
+            dialect: org.hibernate.dialect.H2Dialect
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+            format_sql: true
+
+
+liquibase:
+    changeLog: "classpath:db-changelog/master.xml"

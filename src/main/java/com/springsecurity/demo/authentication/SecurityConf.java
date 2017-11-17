@@ -53,17 +53,18 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
-        http
-        .csrf().disable()
-        .authorizeRequests()
-            .antMatchers("/switch_user").hasRole("SUPER_ADMIN")
-            .antMatchers("/switch_user_exit").hasRole("PREVIOUS_ADMINISTRATOR")
-            .antMatchers("/p/manager-user", "/p/all-login-users").hasAnyRole("SUPER_ADMIN", "ADMIN")
-            .antMatchers("/p/manager-user/").hasAnyRole("SUPER_ADMIN", "ADMIN")
-            .antMatchers("/p/invalidSession", "/p/sessiontimeout").permitAll()
-            .antMatchers("/css/**", "/fonts/**", "/js/**").permitAll()
-            .antMatchers(HttpMethod.POST, "/ajax_login*").permitAll()
-            .anyRequest().permitAll()//位置很重要，是从第一个匹配合适的。
+        http.headers().frameOptions().sameOrigin()//解决H2 web console现实问题 in a frame because it set 'X-Frame-Options' to 'deny'.
+        .and()
+            .csrf().disable()
+            .authorizeRequests()
+                .antMatchers("/switch_user").hasRole("SUPER_ADMIN")
+                .antMatchers("/switch_user_exit").hasRole("PREVIOUS_ADMINISTRATOR")
+                .antMatchers("/p/manager-user", "/p/all-login-users").hasAnyRole("SUPER_ADMIN", "ADMIN")
+                .antMatchers("/p/manager-user/").hasAnyRole("SUPER_ADMIN", "ADMIN")
+                .antMatchers("/p/invalidSession", "/p/sessiontimeout").permitAll()
+                .antMatchers("/css/**", "/fonts/**", "/js/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/ajax_login*").permitAll()
+                .anyRequest().permitAll()//位置很重要，是从第一个匹配合适的。
         .and()
                 .rememberMe()
                 //在这里设置没效果放在 selfAuthenFilter中设置

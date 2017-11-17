@@ -21,11 +21,11 @@
 
     <changeSet id="zhou wanli " author="7">
     <sql>
-        INSERT INTO `authorization` VALUES (1,'/switch_user', 'ALL', 'hasRole(\'ROLE_SUPER_ADMIN\')' );
-        INSERT INTO `authorization` VALUES (2,'/switch_user_exit', 'ALL', 'hasRole(\'ROLE_PREVIOUS_ADMINISTRATOR\')');
-        INSERT INTO `authorization` VALUES (3,'/p/manager-user', 'ALL', 'hasAnyRole(\'ROLE_SUPER_ADMIN\', \'ROLE_ADMIN\')' );
-        INSERT INTO `authorization` VALUES (4,'/p/all-login-users', 'ALL', 'hasAnyRole(\'ROLE_SUPER_ADMIN\', \'ROLE_ADMIN\')' );
-        INSERT INTO `authorization` VALUES (5,'/p/manager-user/', 'ALL', 'hasAnyRole(\'ROLE_SUPER_ADMIN\', \'ROLE_ADMIN\')' );
+        INSERT INTO `authorization` VALUES (1,'/switch_user', 'ALL', 'hasRole(''ROLE_SUPER_ADMIN'')' );
+        INSERT INTO `authorization` VALUES (2,'/switch_user_exit', 'ALL', 'hasRole(''ROLE_PREVIOUS_ADMINISTRATOR'')');
+        INSERT INTO `authorization` VALUES (3,'/p/manager-user', 'ALL', 'hasAnyRole(''ROLE_SUPER_ADMIN'', ''ROLE_ADMIN'')' );
+        INSERT INTO `authorization` VALUES (4,'/p/all-login-users', 'ALL', 'hasAnyRole(''ROLE_SUPER_ADMIN'', ''ROLE_ADMIN'')' );
+        INSERT INTO `authorization` VALUES (5,'/p/manager-user/', 'ALL', 'hasAnyRole(''ROLE_SUPER_ADMIN'', ''ROLE_ADMIN'')' );
         INSERT INTO `authorization` VALUES (6,'/p/invalidSession', 'ALL', 'permitAll()' );
         INSERT INTO `authorization` VALUES (7,'/p/sessiontimeout', 'ALL', 'permitAll()' );
         INSERT INTO `authorization` VALUES (8,'/css/**', 'ALL', 'permitAll()' );

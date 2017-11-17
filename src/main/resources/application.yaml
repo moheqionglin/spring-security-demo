@@ -15,10 +15,10 @@ logging:
         org.springframework.security.access.intercept.aspectj.AspectJSecurityInterceptor: debug
 spring:
     profiles:
-#        active: showAllFilterDemo
-        active: n3_preAuth_selfAuth_logout
-#        active: n3_preAuth_selfAuth_logout_DB
-#        active: n3_preAuth_selfAuth_logout_share_session
+#        active: showAllFilterDemo, h2
+        active: n3_preAuth_selfAuth_logout, h2
+#        active: n3_preAuth_selfAuth_logout_DB, h2
+#        active: n3_preAuth_selfAuth_logout_share_session, h2
     datasource:
 #        driver-class-name: org.h2.Driver
 #        url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
