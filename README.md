@@ -1,5 +1,6 @@
 
 # Project Description
+If you want to see spring security detail description : could ses blog: [spring security源码深入剖析][11]
 This Project use **spring boot** + **spring mvc** + **spring security** + **liquibase** + **h2** technology.  
 Functions like below:
 - Custom Pre-Auth Filter: When user login into this demo, it will give an Auth token into browser cookies。And when a request come to system, Pre-auth filter will convert token to User authentication info.
@@ -83,3 +84,4 @@ There are three user account into database
 [8]: https://github.com/moheqionglin/spring-security-demo/blob/develop/src/main/resources/images/super-switch-user-1.png
 [9]: https://github.com/moheqionglin/spring-security-demo/blob/develop/src/main/resources/images/super-switch-user.png
 [10]: https://github.com/moheqionglin/spring-security-demo/blob/develop/src/main/resources/images/find-user.png
+[11]: http://www.moheqionglin.com/site/serialize/02007001001/detail.html
