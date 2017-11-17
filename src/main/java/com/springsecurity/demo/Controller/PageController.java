@@ -44,7 +44,10 @@ public class PageController {
     @GetMapping("/p/all-login-users")
     public String allLoginUsers(Map<String, Object> model) {
         List<Object> userInfoLists = sessionRegistry.getAllPrincipals();
-        List<UserInfo> users = userInfoLists.stream().filter(o -> o instanceof UserInfo).map(o -> (UserInfo) o).collect(Collectors.toList());
+        List<UserInfo> users = userInfoLists.stream()
+                .filter(o -> o instanceof UserInfo)
+                .filter(user -> sessionRegistry.getAllSessions(user, false).size() > 0)
+                .map(o -> (UserInfo) o).collect(Collectors.toList());
         model.put("allUsers", users);
         log.trace("Trying to render page: {}", users);
         return "all-login-users";

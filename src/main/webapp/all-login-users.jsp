@@ -36,7 +36,7 @@
     </div>
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
-        <h2>所有再先的用户列表</h2>
+        <h2>所有在线的用户列表</h2>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>

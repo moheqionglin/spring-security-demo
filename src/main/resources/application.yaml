@@ -16,8 +16,8 @@ logging:
 spring:
     profiles:
 #        active: showAllFilterDemo
-#        active: n3_preAuth_selfAuth_logout
-        active: n3_preAuth_selfAuth_logout_DB
+        active: n3_preAuth_selfAuth_logout
+#        active: n3_preAuth_selfAuth_logout_DB
 #        active: n3_preAuth_selfAuth_logout_share_session
     datasource:
 #        driver-class-name: org.h2.Driver

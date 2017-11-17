@@ -115,7 +115,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         concurrentSessionFilter.setLogoutHandlers(new LogoutHandler[] {
                 new SecurityContextLogoutHandler(),//默认
                 sessionExceedSecurityContextLogoutHandler(),  // 不加这句话， 因为 有 auth_token 和 remoberme_token 会不断的换jesssionID，
-//                tokenBasedRememberMeServices() // 不能加这句话  因为 remeber_me token 一个用户名只会有一个，后面登录的会覆盖之前的token。 所以推出的时候只要把之前的 remebermetoken
+                tokenBasedRememberMeServices() // 不能加这句话  因为 remeber_me token 一个用户名只会有一个，后面登录的会覆盖之前的token。 所以推出的时候只要把之前的 remebermetoken
 //                删掉记好了
         });
         return concurrentSessionFilter;

@@ -70,7 +70,7 @@ public class UserRestController {
             if(allSessionIds != null){
                 allSessionIds.stream().forEach(session -> {
                     session.expireNow();
-                    sessionRegistry.removeSessionInformation(session.getSessionId());
+//                    sessionRegistry.removeSessionInformation(session.getSessionId());
                     log.info( "{} [session.getSessionId()] 被管理员 {} 踢出。",email,  superAdminUser.getEmail());
                 });
             }
