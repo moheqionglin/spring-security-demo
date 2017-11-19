@@ -13,7 +13,9 @@ logging:
         org.springframework.security.access.AccessDecisionManager: debug
         org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor: debug
         org.springframework.security.access.intercept.aspectj.AspectJSecurityInterceptor: debug
-n
+spring:
+    profiles:
+      active: n3_preAuth_selfAuth_logout, h2
 #        active: n3_preAuth_selfAuth_logout_DB, h2
 #        active: n3_preAuth_selfAuth_logout_share_session, h2
 
